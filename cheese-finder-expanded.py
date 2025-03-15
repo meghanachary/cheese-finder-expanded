@@ -1,7 +1,9 @@
 import pygame
+import os
 import sys
 import random
 import math
+
 
 # Initialize Pygame
 pygame.init()
@@ -32,13 +34,36 @@ score = 0
 # Set up font for score
 font = pygame.font.SysFont("Arial", 24)
 
-# Load the item collection sound effects
-cheese_sound = pygame.mixer.Sound("point_2.mp3")
+# Get the directory path of the script
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-pizza_sound = pygame.mixer.Sound("point.mp3")  
+# Load images
+background_street_img = pygame.image.load(os.path.join(SCRIPT_DIR, "assets", "background_street.png"))
 
-candy_sound = pygame.mixer.Sound("point_3.mp3")
+rat_img = pygame.image.load(os.path.join(SCRIPT_DIR, "assets", "rat.png"))
+rat_img = pygame.transform.scale(rat_img, (90, 90))
 
+cheese_img = pygame.image.load(os.path.join(SCRIPT_DIR, "assets", "cheese.png"))
+cheese_img = pygame.transform.scale(cheese_img, (32, 32)) 
+
+pizza_img = pygame.image.load(os.path.join(SCRIPT_DIR, "assets", "pizza.png"))
+pizza_img = pygame.transform.scale(pizza_img, (52, 52)) 
+
+candy_img = pygame.image.load(os.path.join(SCRIPT_DIR, "assets","candy.png"))
+candy_img = pygame.transform.scale(candy_img, (32, 62))
+
+mute_img = pygame.image.load(os.path.join(SCRIPT_DIR,"assets","mute.png"))
+mute_img = pygame.transform.scale(mute_img, (32, 32)) 
+
+unmute_img = pygame.image.load(os.path.join(SCRIPT_DIR,"assets","unmute.png"))
+unmute_img = pygame.transform.scale(unmute_img, (32, 32))
+
+# Load sounds
+cheese_sound = pygame.mixer.Sound(os.path.join(SCRIPT_DIR,"assets","point_2.mp3"))
+pizza_sound = pygame.mixer.Sound(os.path.join(SCRIPT_DIR,"assets","point.mp3"))
+candy_sound = pygame.mixer.Sound(os.path.join(SCRIPT_DIR,"assets","point_3.mp3"))
+
+ 
 # Function to create a new cheese at a random location
 def create_cheese():
     x = random.randint(30, WIDTH - 30)
@@ -56,32 +81,6 @@ def create_candy():
     x = random.randint(30, WIDTH - 30)
     y = random.randint(30, HEIGHT - 30)
     return [x, y]
-
-# Load images and resize
-# Load rat image
-rat_img = pygame.image.load("rat.png")  
-rat_img = pygame.transform.scale(rat_img, (90, 90))
-
-# Load background image
-background_img = pygame.image.load("backgroundgame_mu.png")  
-
-# Load cheese image
-cheese_img = pygame.image.load("cheese.png")  
-cheese_img = pygame.transform.scale(cheese_img, (32, 32))  
-
-# Load pizza image
-pizza_img = pygame.image.load("pizza.png") 
-pizza_img = pygame.transform.scale(pizza_img, (52, 52))  
-
-# Load candy image
-candy_img = pygame.image.load("candy.png")
-candy_img = pygame.transform.scale(candy_img, (32, 62))
-
-# Load speaker and mute icons
-mute_icon = pygame.image.load("mute.png") 
-mute_icon = pygame.transform.scale(mute_icon, (32, 32)) 
-unmute_icon = pygame.image.load("unmute.png")  
-unmute_icon = pygame.transform.scale(unmute_icon, (32, 32))
 
 # Set up game loop
 clock = pygame.time.Clock()
@@ -206,8 +205,8 @@ while True:
             last_candy_time = current_time  # Update the time when the last candy spawned
 
     # Fill the screen with the custom background image
-    screen.blit(background_img, (0, 0))  # Draw the background at the top-left corner
-    background_img = pygame.transform.scale(background_img, (WIDTH, HEIGHT))
+    screen.blit(background_street_img, (0, 0))  # Draw the background at the top-left corner
+    background_street_img = pygame.transform.scale(background_street_img, (WIDTH, HEIGHT))
 
     # Draw rat image
     screen.blit(rat_img, (rat_x, rat_y))  # Use rat_x, rat_y directly
@@ -232,14 +231,14 @@ while True:
     screen.blit(score_text, (score_x, 20)) 
 
     # Draw mute/unmute icon
-    mute_icon_width, mute_icon_height = mute_icon.get_width(), mute_icon.get_height()
-    mute_button = pygame.Rect(WIDTH - mute_icon_width - 20, 10, mute_icon_width, mute_icon_height)
+    mute_img_width, mute_img_height = mute_img.get_width(), mute_img.get_height()
+    mute_button = pygame.Rect(WIDTH - mute_img_width - 20, 10, mute_img_width, mute_img_height)
     
     # Display mute or unmute icon based on the muted state
     if muted:
-        screen.blit(mute_icon, (WIDTH - mute_icon_width - 20, 10)) 
+        screen.blit(mute_img, (WIDTH - mute_img_width - 20, 10)) 
     else:
-        screen.blit(unmute_icon, (WIDTH - mute_icon_width - 20, 10))  
+        screen.blit(unmute_img, (WIDTH - mute_img_width - 20, 10))  
 
 
     # Update display
